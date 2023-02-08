@@ -6,6 +6,13 @@ __pycache__/
 # C extensions
 *.so
 
+# Ignore folder
+.vs/
+linux_env/
+*.pyproj
+*.sln
+
+
 # Distribution / packaging
 .Python
 build/
