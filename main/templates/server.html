@@ -10,7 +10,7 @@
             height: 540px;
             width: 960px;
             position: relative;
-            background-image: url(../image.png);
+            background-image: url("{{ url_for('static', filename='image.jpg') }}");
             background-size: cover;
             object-fit: cover;
             z-index: 1;
@@ -135,7 +135,7 @@
         addEventListener('fullscreenchange', (event) => {
             if (document.fullscreenElement) {
                 document.getElementById("load").style.display = "none";
-                socket.send("ADD|sssa|102.515.61.1|ONLINE")
+                socket.send("STREAM")
             } 
             else {
                 document.getElementById("load").style.display = "block";

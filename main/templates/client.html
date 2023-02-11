@@ -23,33 +23,23 @@
                     <th>Status</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr>
-                    <td>System name</td>
-                    <td>127.0.0.1:8080</td>
-                    <td class="text-success">ONLINE<button class="btn btn-success bg-dark float-end m-0 py-0" name="connect" value="1">connect</button></td>
-                </tr>
-                <tr>
-                    <td>System name</td>
-                    <td>127.0.0.1:8080</td>
-                    <td class="text-success">ONLINE<button class="btn btn-success bg-dark float-end m-0 py-0" name="connect" value="127.0.0.1:8080">connect</button></td>
-                </tr>
-                <tr>
-                    <td>System name</td>
-                    <td>127.0.0.1:8080</td>
-                    <td class="text-danger">OFFLINE<button type="button" class="btn btn-danger bg-dark float-end m-0 py-0 disabled">connect</button></td>
-                </tr>
-                <tr>
-                    <td>System name</td>
-                    <td>127.0.0.1:8080</td>
-                    <td class="text-success">ONLINE<button class="btn btn-success bg-dark float-end m-0 py-0" name="connect" value="127.0.0.1:8080">connect</button></td>
-                </tr>
+            <tbody id="load">
             </tbody>
         </table>
         </form>
     </div>
     <script>
-        
+        function getContent() {
+            const xhttp = new XMLHttpRequest();
+            xhttp.onload = function () {
+                document.getElementById("load").innerHTML = this.responseText;
+            }
+            xhttp.open("GET", "/content", false);
+            xhttp.send();
+        }
+        window.setInterval(() => {
+            getContent();
+        }, 1500);
     </script>
 </body>
 </html>
