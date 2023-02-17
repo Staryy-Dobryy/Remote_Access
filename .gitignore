@@ -11,6 +11,8 @@ __pycache__/
 linux_env/
 *.pyproj
 *.sln
+*.jpg
+*.db
 
 
 # Distribution / packaging
