@@ -20,37 +20,37 @@
         <div class="offcanvas-body">
             <div class="container my-5 p-3">
                 <div class="input-group">
-                    <button class="btn btn-outline-warning w-50 p-3 border-0 myShadow-btn">< Jump</button>
-                    <button class="btn btn-outline-warning w-50 p-3 border-0 myShadow-btn">Jump ></button>
+                    <button class="btn btn-outline-warning w-50 p-3 border-0 myShadow-btn" name="JUMP-" send-message>< Jump</button>
+                    <button class="btn btn-outline-warning w-50 p-3 border-0 myShadow-btn" name="JUMP+" send-message>Jump ></button>
                 </div>
-                <button class="btn btn-outline-warning w-100 mb-3 border-0 myShadow-btn">ENTER</button>
+                <button class="btn btn-outline-warning w-100 mb-3 border-0 myShadow-btn" name="ENTER" send-message>ENTER</button>
                 <div class="input-group mt-4">
-                    <button class="btn btn-outline-warning w-50 border-0 myShadow-btn">- Volume</button>
-                    <button class="btn btn-outline-warning w-50 border-0 myShadow-btn">Volume +</button>
+                    <button class="btn btn-outline-warning w-50 border-0 myShadow-btn" name="V-" send-message>- Volume</button>
+                    <button class="btn btn-outline-warning w-50 border-0 myShadow-btn" name="V+" send-message>Volume +</button>
                 </div>
-                <button class="btn btn-outline-warning w-100 mb-4 border-0 myShadow-btn">Silence</button>
+                <button class="btn btn-outline-warning w-100 mb-4 border-0 myShadow-btn" name="SILENCE" send-message>Silence</button>
                 <div class="input-group">
-                    <input type="text" class="form-control w-75 my-2 bg-dark text-light border-0 myShadow-btn" placeholder="Enter text to be spoken">
-                    <button class="btn btn-outline-warning w-25 my-2 border-0 myShadow-btn">Send</button>
+                    <input type="text" class="form-control w-75 my-2 bg-dark text-light border-0 myShadow-btn" id="SPEAK-TEXT" placeholder="Enter text to be spoken">
+                    <button class="btn btn-outline-warning w-25 my-2 border-0 myShadow-btn" name="SPEAK" send-message>Send</button>
                 </div>
                 <div class="input-group">
-                    <input type="text" class="form-control w-75 my-2 bg-dark text-light border-0 myShadow-btn" placeholder="Enter text to display">
-                    <button class="btn btn-outline-warning w-25 my-2 border-0 myShadow-btn">Alert</button>
+                    <input type="text" class="form-control w-75 my-2 bg-dark text-light border-0 myShadow-btn" id="ALERT-TEXT" placeholder="Enter text to display">
+                    <button class="btn btn-outline-warning w-25 my-2 border-0 myShadow-btn" name="ALERT" send-message>Alert</button>
                 </div>
-                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn">Выключить ПК</button>
-                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn">Перезагрузить ПК</button>
-                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn">Заблокировать ПК</button>
-                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn">Открыть диспеччер задач</button>
+                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn" name="pcOFF" send-message>Выключить ПК</button>
+                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn" name="pcREBOOT" send-message>Перезагрузить ПК</button>
+                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn" name="pcBLOCK" send-message>Заблокировать ПК</button>
+                <button class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn" name="MONITOR" send-message>Открыть диспеччер задач</button>
                 <div class="dropdown">
                     <button type="button" class="btn btn-outline-warning w-100 my-2 border-0 myShadow-btn dropdown-toggle" data-bs-toggle="dropdown">
-                      Dropdown button
+                        Run application
                     </button>
                     <ul class="dropdown-menu border border-warning bg-dark">
-                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" href="#">Fire Fox</button></li>
-                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" href="#">Calculator</button></li>
-                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" href="#">File browser</button></li>
+                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" name="OPEN-FIREFOX" send-message>Fire Fox</button></li>
+                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" name="OPEN-CALC" send-message>Calculator</button></li>
+                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" name="OPEN-FILES" send-message>File browser</button></li>
                       <li><hr class="dropdown-divider bg-secondary"></hr></li>
-                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" href="#">Terminal</button></li>
+                      <li><button class="btn btn-outline-warning w-100 rounded-0 border-0" name="OPEN-TERMINAL" send-message>Terminal</button></li>
                     </ul>
                 </div>
                 <h4>YouTube</h4>

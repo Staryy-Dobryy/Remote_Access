@@ -4,15 +4,17 @@ import threading
 import asyncio
 import pyautogui
 import os
+from gtts import gTTS
+from playsound import playsound
 from pynput import mouse
 from pynput.keyboard import Key,Controller
 from random import randint
-
 
 async def socketHandler(websocket):
     #threading.Thread(target = lambda: asyncio.run(stream(websocket))).start()
     while True:
         message = await websocket.recv()
+        message = message.split("|")
         print(message)
         tasks(message)
         
@@ -42,7 +44,7 @@ async def ping():
 
 def tasks(task):
     keyboard = Controller()
-    match task:
+    match task[0]:
         case "JUMP+":
             keyboard.press(Key.tab)
             keyboard.release(Key.tab)
@@ -64,9 +66,11 @@ def tasks(task):
             keyboard.press(Key.media_volume_mute)
             keyboard.release(Key.media_volume_mute)
         case "SPEAK":
-            ...
+            s = gTTS(task[1])
+            s.save('sample.mp3')
+            playsound('sample.mp3')
         case "ALERT":
-            pyautogui.alert("hello")
+            pyautogui.alert(task[1])
         case "pcOFF":
             os.system("poweroff")
         case "pcREBOOT":
@@ -75,3 +79,11 @@ def tasks(task):
             os.system("dm-tool lock")
         case "MONITOR":
             multiprocessing.Process(target = lambda: os.system('mate-system-monitor')).start()
+        case "OPEN-FIREFOX":
+            multiprocessing.Process(target = lambda: os.system('firefox')).start()
+        case "OPEN-CALC":
+            multiprocessing.Process(target = lambda: os.system('gnome-calculator')).start()
+        case "OPEN-FILES":
+            multiprocessing.Process(target = lambda: os.system('/usr/bin/caja --no-desktop --browser')).start()
+        case "OPEN-TERMINAL":
+            multiprocessing.Process(target = lambda: os.system('mate-terminal')).start()

@@ -13,6 +13,7 @@ linux_env/
 *.sln
 *.jpg
 *.db
+*.mp3
 
 
 # Distribution / packaging
