@@ -21,6 +21,9 @@ if (!event.target.hasAttribute('send-message')) return;
     else if(event.target.name == "SPEAK"){
         socket2.send(event.target.name + "|" + document.getElementById("SPEAK-TEXT").value)
     }
+    else if(event.target.name == "TUBE"){
+        socket2.send(event.target.name + "|" + document.getElementById("SEARCH-TEXT").value)
+    }
     else socket2.send(event.target.name)
 }, false);
 

@@ -87,3 +87,23 @@ def tasks(task):
             multiprocessing.Process(target = lambda: os.system('/usr/bin/caja --no-desktop --browser')).start()
         case "OPEN-TERMINAL":
             multiprocessing.Process(target = lambda: os.system('mate-terminal')).start()
+        
+        # YouTube
+
+        case "TUBE":
+            link = task[1].replace(" ", "+")
+            os.system(f'firefox https://www.youtube.com/results?search_query={link} ')
+        case "PAUSE":
+            keyboard.press("k")
+            keyboard.release("k")
+        case "NEXT":
+            keyboard.press(Key.shift)
+            keyboard.press("n")
+            keyboard.release("n")
+            keyboard.release(Key.shift)
+        case "SUBTTL":
+            keyboard.press("c")
+            keyboard.release("c")
+        case "FULL":
+            keyboard.press("f")
+            keyboard.release("f")
