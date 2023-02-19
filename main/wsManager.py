@@ -2,10 +2,13 @@ import websockets
 import multiprocessing
 import threading
 import asyncio
-from DBworcker import addData
+from DBworcker import addData, getObjects
 from pynput import mouse, keyboard
 
 stream = False
+usersArray = getObjects("users.db")
+
+def requestUsers(): return usersArray
 
 async def socketHandler(websocket):
     while True:
@@ -26,16 +29,23 @@ def process():
 async def wsTask(message, websocket):
     match message[0]:
         case "ADD":
-            addData("users.db", message)
+            changeStatus(message)
             print("add", message)
         case "STREAM":
             global stream
             stream = int(message[1])
 
-            async with websockets.connect("ws://localhost:8765") as serverConnection:
+            async with websockets.connect("ws://192.168.56.101:8081") as serverConnection:
                 listenInput(serverConnection)
                 stream = await websocket.recv()
                 print("STOP STREAM")
+
+def changeStatus(message):
+    ip = message[2]
+    for item in usersArray:
+        if item.IPaddr == ip: item.status = "ONLINE"
+        break
+    addData("users.db", message)
 
 def listenInput(websocket):
     treads = []
@@ -54,13 +64,13 @@ async def mouseControle(websocket):
             else:
                 if isinstance(event, mouse.Events.Move):
                     move = "Move " + str(event.x) + " " + str(event.y)
-                    await websocket.send(move)
+                    await websocket.send("INPUT|" + move)
                 elif isinstance(event, mouse.Events.Click):
                     click = "Click " + str(event.button) + " " + str(event.pressed)
-                    await websocket.send(click)
+                    await websocket.send("INPUT|" + click)
                 elif isinstance(event, mouse.Events.Scroll):
                     scroll = "Scroll " + str(event.dx) + " " + str(event.dy)
-                    await websocket.send(scroll)  
+                    await websocket.send("INPUT|" + scroll)  
 
 async def keyboardControle(websocket):
     global stream
@@ -76,7 +86,7 @@ async def keyboardControle(websocket):
                 finally:
                     if str(event)[0] == "P":
                         button = "Press " + key
-                        await websocket.send(button)
+                        await websocket.send("INPUT|" + button)
                     else:
                         button = "Release " + key
-                        await websocket.send(button)
+                        await websocket.send("INPUT|" + button)

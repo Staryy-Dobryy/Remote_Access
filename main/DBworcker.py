@@ -2,6 +2,12 @@ import sqlite3
 from sqlite3 import Error
 from datetime import datetime
 
+class users:
+    def __init__(self, systemName, IPaddr):
+        self.systemName = systemName
+        self.IPaddr = IPaddr
+        self.status = "OFFLINE"
+
 def init_conn(path):
     conn = None
     try:
@@ -13,7 +19,7 @@ def init_conn(path):
     return conn    
 
 def init_tables(connection):
-    sql = "CREATE TABLE IF NOT EXISTS users(systemName text, IPaddr text, status text);"
+    sql = "CREATE TABLE IF NOT EXISTS users(systemName text, IPaddr text);"
     connection.execute(sql)
 
 def prepareDb(name):
@@ -23,27 +29,11 @@ def prepareDb(name):
 
 def addData(db, data):
     connection = init_conn(db)
-    requestIPs = getStatus(db)
-    if data[2] in requestIPs:
-        sql = "UPDATE users SET status = '{}' WHERE IPaddr = '{}'".format(data[3], data[2])
-    else:
-        sql = "INSERT INTO users(`systemName`, `IPaddr`, `status`) VALUES('{}', '{}', '{}')".format(data[1], data[2], data[3])
+    sql = "INSERT INTO users(`systemName`, `IPaddr`) VALUES('{}', '{}')".format(data[1], data[2])
     cursor = connection.cursor()
     cursor.execute(sql)
     connection.commit()
     connection.close()
-
-def getStatus(db):
-    IPs = []
-    connection = init_conn(db)
-    sql = "SELECT IPaddr FROM users;"
-    cursor = connection.cursor()
-    cursor.execute(sql)
-    temp = cursor.fetchall()
-    connection.close()
-    for item in temp:
-        IPs.append(item[0])
-    return IPs
 
 def getData(db):
     connection = init_conn(db)
@@ -53,3 +43,10 @@ def getData(db):
     rows = cursor.fetchall()
     connection.close()
     return rows
+
+def getObjects(db):
+    objects = []
+    data = getData(db)
+    for obj in data:
+        objects.append(users(obj[0], obj[1]))
+    return objects

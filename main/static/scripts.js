@@ -1,5 +1,5 @@
 let socket = new WebSocket("ws://127.0.0.1:8081");
-let socket2 = new WebSocket("ws://10.0.2.15:8081");
+let socket2 = new WebSocket("ws://192.168.56.101:8081");
 
 socket2.onopen = function (event){
     console.log("CONNECTION OPEN")

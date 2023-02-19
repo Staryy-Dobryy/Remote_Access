@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request
-from DBworcker import *
-from wsManager import process
+from DBworcker import prepareDb
+from wsManager import process, requestUsers
 
 app = Flask("name")
 prepareDb("users.db")
@@ -12,7 +12,7 @@ def index():
 
 @app.route('/content')
 def content():
-    return render_template("load.html", data=getData("users.db"))
+    return render_template("load.html", users=requestUsers())
 
 @app.route('/сonnect', methods=['GET', 'POST'])
 def сonnect():

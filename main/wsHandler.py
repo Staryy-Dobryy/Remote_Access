@@ -11,7 +11,7 @@ from pynput.keyboard import Key,Controller
 from random import randint
 
 async def socketHandler(websocket):
-    #threading.Thread(target = lambda: asyncio.run(stream(websocket))).start()
+    threading.Thread(target = lambda: asyncio.run(stream(websocket))).start()
     while True:
         message = await websocket.recv()
         message = message.split("|")
@@ -21,7 +21,7 @@ async def socketHandler(websocket):
 
 async def main():
     asyncio.create_task(ping())
-    async with websockets.serve(socketHandler, "10.0.2.15", 8081):
+    async with websockets.serve(socketHandler, "192.168.56.101", 8081):
         await asyncio.Future()
 
 def runSocket():
@@ -34,13 +34,31 @@ async def stream(websocket):
         x = str(randint(0, 1000000))
         screenshot = pyautogui.screenshot()
         screenshot.save("static/image.jpg")
-        await websocket.send(f"url('http://10.0.2.15:8080/static/image.jpg?r={x}')")
+        await websocket.send(f"url('http://192.168.56.101:8080/static/image.jpg?r={x}')")
 
 async def ping():
-    async with websockets.connect("ws://127.0.0.1:8081") as serverConnection:
-        while True:
-            await serverConnection.send("ADD|PC|10.0.2.15|ONLINE")
-            await asyncio.sleep(3)
+    nameOS = os.uname()
+    oSys = nameOS.sysname + " " + nameOS.release
+    ip = getIp()
+    connection = False
+    while connection == False:
+        # Try change status on client app
+        # If not in the database, adds in
+        try:
+            async with websockets.connect("ws://192.168.56.102:8081") as serverConnection:
+                connection = True
+                await serverConnection.send(f"ADD|{oSys}|{ip}")
+        except ConnectionRefusedError as error:
+            print(error)
+            await asyncio.sleep(5)
+
+def getIp():
+    os.system("ifconfig enp0s8 > .ifconfig.txt")
+    with open(".ifconfig.txt", "r") as config:
+        line = config.readlines()[1]
+        ip = line.split(" ")
+        for item in range(len(ip)):
+            if ip[item] == "inet": return ip[item + 1]
 
 def tasks(task):
     keyboard = Controller()
@@ -78,15 +96,15 @@ def tasks(task):
         case "pcBLOCK":
             os.system("dm-tool lock")
         case "MONITOR":
-            multiprocessing.Process(target = lambda: os.system('mate-system-monitor')).start()
+            multiprocessing.Process(target = lambda: asyncio.run(os.system('mate-system-monitor'))).start()
         case "OPEN-FIREFOX":
-            multiprocessing.Process(target = lambda: os.system('firefox')).start()
+            multiprocessing.Process(target = lambda: asyncio.run(os.system('firefox'))).start()
         case "OPEN-CALC":
-            multiprocessing.Process(target = lambda: os.system('gnome-calculator')).start()
+            multiprocessing.Process(target = lambda: asyncio.run(os.system('gnome-calculator'))).start()
         case "OPEN-FILES":
-            multiprocessing.Process(target = lambda: os.system('/usr/bin/caja --no-desktop --browser')).start()
+            multiprocessing.Process(target = lambda: asyncio.run(os.system('/usr/bin/caja --no-desktop --browser'))).start()
         case "OPEN-TERMINAL":
-            multiprocessing.Process(target = lambda: os.system('mate-terminal')).start()
+            multiprocessing.Process(target = lambda: asyncio.run(os.system('mate-terminal'))).start()
         
         # YouTube
 
