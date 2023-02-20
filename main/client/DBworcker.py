@@ -29,7 +29,7 @@ def prepareDb(name):
 
 def addData(db, data):
     connection = init_conn(db)
-    sql = "INSERT INTO users(`systemName`, `IPaddr`) VALUES('{}', '{}')".format(data[1], data[2])
+    sql = "INSERT INTO users(`systemName`, `IPaddr`) VALUES('{}', '{}')".format(data[0], data[1])
     cursor = connection.cursor()
     cursor.execute(sql)
     connection.commit()
