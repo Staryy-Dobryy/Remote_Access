@@ -13,6 +13,4 @@ def index():
 def imageLoad():
     return render_template("loadImage.html")
 
-
-
 app.run("192.168.56.101", 8080)

@@ -45,6 +45,7 @@ def getData(db):
     return rows
 
 def getObjects(db):
+    # Returns data about users
     objects = []
     data = getData(db)
     for obj in data:

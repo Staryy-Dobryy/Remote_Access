@@ -6,8 +6,8 @@ import pyautogui
 import os
 from gtts import gTTS
 from playsound import playsound
-from pynput import mouse
-from pynput.keyboard import Key,Controller
+from pynput.mouse import Button, Controller as mouseController
+from pynput.keyboard import Key, Controller as keyboardController
 from random import randint
 
 async def socketHandler(websocket):
@@ -16,8 +16,7 @@ async def socketHandler(websocket):
         message = await websocket.recv()
         message = message.split("|")
         print(message)
-        tasks(message)
-        
+        tasks(message)  
 
 async def main():
     asyncio.create_task(ping())
@@ -30,6 +29,7 @@ def runSocket():
     print("ws - start")
 
 async def stream(websocket):
+    # Stream screen
     while True:
         x = str(randint(0, 1000000))
         screenshot = pyautogui.screenshot()
@@ -48,7 +48,7 @@ async def ping():
             async with websockets.connect("ws://192.168.56.102:8081") as serverConnection:
                 connection = True
                 await serverConnection.send(f"ADD|{oSys}|{ip}")
-        except ConnectionRefusedError as error:
+        except OSError as error:
             print(error)
             await asyncio.sleep(5)
 
@@ -61,7 +61,8 @@ def getIp():
             if ip[item] == "inet": return ip[item + 1]
 
 def tasks(task):
-    keyboard = Controller()
+    mous = mouseController()
+    keyboard = keyboardController()
     match task[0]:
         case "JUMP+":
             keyboard.press(Key.tab)
@@ -96,15 +97,15 @@ def tasks(task):
         case "pcBLOCK":
             os.system("dm-tool lock")
         case "MONITOR":
-            multiprocessing.Process(target = lambda: asyncio.run(os.system('mate-system-monitor'))).start()
+            multiprocessing.Process(target = lambda: os.system('mate-system-monitor')).start()
         case "OPEN-FIREFOX":
-            multiprocessing.Process(target = lambda: asyncio.run(os.system('firefox'))).start()
+            multiprocessing.Process(target = lambda: os.system('firefox')).start()
         case "OPEN-CALC":
-            multiprocessing.Process(target = lambda: asyncio.run(os.system('gnome-calculator'))).start()
+            multiprocessing.Process(target = lambda: os.system('gnome-calculator')).start()
         case "OPEN-FILES":
-            multiprocessing.Process(target = lambda: asyncio.run(os.system('/usr/bin/caja --no-desktop --browser'))).start()
+            multiprocessing.Process(target = lambda: os.system('/usr/bin/caja --no-desktop --browser')).start()
         case "OPEN-TERMINAL":
-            multiprocessing.Process(target = lambda: asyncio.run(os.system('mate-terminal'))).start()
+            multiprocessing.Process(target = lambda: os.system('mate-terminal')).start()
         
         # YouTube
 
@@ -125,3 +126,28 @@ def tasks(task):
         case "FULL":
             keyboard.press("f")
             keyboard.release("f")
+
+        # keyboard and mouse integration
+
+        case "INPUT":
+            control = task[1].split(" ")
+            print(control)
+            match control[0]:
+                case "Move":
+                    mous.position = (int(control[1]), int(control[2]))
+                case "Click":
+                    if control[1] == "Button.left":
+                        if control[2] == "True":
+                            mous.press(Button.left)
+                        else:
+                            mous.release(Button.left)
+                    else:
+                        if control[2] == "True":
+                            mous.press(Button.right)
+                        else:
+                            mous.release(Button.right)
+                case "Scroll":
+                    mous.scroll(int(control[1]), int(control[2]))
+                case "Press":
+                    keyboard.press(control[1])
+                    keyboard.release(control[1])

@@ -60,7 +60,7 @@ async def mouseControle(websocket):
         with mouse.Events() as events:
             event = events.get(1)
             if event is None:
-                print('You did not interact with the mouse within one second')
+                print('None mouse event')
             else:
                 if isinstance(event, mouse.Events.Move):
                     move = "Move " + str(event.x) + " " + str(event.y)
